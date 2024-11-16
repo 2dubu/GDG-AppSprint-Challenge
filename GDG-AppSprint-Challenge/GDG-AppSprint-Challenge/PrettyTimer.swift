@@ -6,16 +6,101 @@
 //
 
 import SwiftUI
+import Combine
 
 struct PrettyTimer: View {
+    @State private var progress: Double = 1
+    @State private var remainingTime: Int = 60 * 5
+    @State private var formattedTime: String = "00:00"
+    @State private var timer: AnyCancellable?
+    
+    private let initialTime: Int = 60 * 5 // 5 min
+    private var lineWidth: CGFloat = 8
+    private var endCircleSize: CGFloat = 18
+    
+    private func formatTime(_ seconds: Int) -> String {
+        let minutes = seconds / 60
+        let seconds = seconds % 60
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    private func startTimer() {
+        formattedTime = formatTime(remainingTime)
+        
+        timer?.cancel()
+        timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+            .sink { _ in
+                guard remainingTime > 0 else {
+                    timer?.cancel()
+                    return
+                }
+                remainingTime -= 1
+                progress = Double(remainingTime) / Double(initialTime)
+                formattedTime = formatTime(remainingTime)
+            }
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 0) {
+            ZStack(alignment: .bottom) {
+                GeometryReader { geometry in
+                    let radius = (geometry.size.width - 18 * 2) / 2
+                    let angle = Angle(degrees: progress * 360 - 90)
+                    let xOffset = cos(angle.radians) * radius
+                    let yOffset = sin(angle.radians) * radius
+                    
+                    ZStack {
+                        Circle()
+                            .foregroundStyle(.semiWhite)
+                        
+                        Group {
+                            Circle()
+                                .stroke(
+                                    .lightGray,
+                                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                                )
+                            
+                            Circle()
+                                .trim(from: 0, to: progress)
+                                .stroke(
+                                    .primaryBlue,
+                                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                                )
+                                .rotationEffect(Angle(degrees: -90))
+                                .animation(.easeInOut(duration: 0.25), value: progress)
+                        }
+                        .padding(18)
+                        
+                        // MARK: - Step 3
+                        Circle()
+                            .foregroundStyle(.primaryBlue)
+                            .frame(width: endCircleSize, height: endCircleSize)
+                            .offset(x: xOffset, y: yOffset)
+                            .animation(.easeInOut, value: progress)
+                    }
+                    .overlay {
+                        contentBody
+                    }
+                }
+            }
+            .frame(width: 275, height: 275)
         }
-        .padding()
+    }
+}
+
+extension PrettyTimer {
+    private var contentBody: some View {
+        VStack(spacing: 10) {
+            CapsuleView(title: "GCU • KHU")
+            
+            Text("GDG on Campus")
+                .font(.wantedSans(family: .Medium, size: 20))
+                .foregroundStyle(.darkGray)
+            
+            Text(formattedTime)
+                .font(.wantedSans(family: .SemiBold, size: 42))
+                .foregroundStyle(.darkGray)
+        }
     }
 }
 

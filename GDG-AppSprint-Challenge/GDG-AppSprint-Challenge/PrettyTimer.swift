@@ -15,16 +15,23 @@ struct PrettyTimer: View {
     @State private var timer: AnyCancellable?
     @State private var isRunning: Bool = false
     
-    private let initialTime: Int = 60 * 5 // 5 min
-    private var lineWidth: CGFloat = 8
-    private var endCircleSize: CGFloat = 18
+    private let totalMinutes = 5
+    private let circlePadding: CGFloat = 18
+    private let strokeWidth: CGFloat = 8
+    private let endCircleDiameter: CGFloat = 18
+
+    private var initialTime: Int {
+        return totalMinutes * 60
+    }
     
+    /// "MM:SS" 형식으로 format
     private func formatTime(_ seconds: Int) -> String {
         let minutes = seconds / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
     
+    /// 타이머 시작
     private func startTimer() {
         formattedTime = formatTime(remainingTime)
         isRunning = true
@@ -41,6 +48,7 @@ struct PrettyTimer: View {
             }
     }
     
+    /// 타이머 초기화
     private func resetTimer() {
         remainingTime = 60 * 5
         formattedTime = "05:00"
@@ -54,8 +62,12 @@ struct PrettyTimer: View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
                 GeometryReader { geometry in
-                    let radius = (geometry.size.width - 18 * 2) / 2
+                    let radius = (geometry.size.width - 18 * 2) / 2 // 원의 반지름 계산
                     let angle = Angle(degrees: progress * 360 - 90)
+                    
+                    // ProgressBar의 끝 점의 위치를 계산
+                    // xOffset: 원 중심으로부터 x축으로 떨어진 거리
+                    // yOffset: 원 중심으로부터 y축으로 떨어진 거리
                     let xOffset = cos(angle.radians) * radius
                     let yOffset = sin(angle.radians) * radius
                     
@@ -67,24 +79,24 @@ struct PrettyTimer: View {
                             Circle()
                                 .stroke(
                                     .lightGray,
-                                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                                    style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round)
                                 )
                             
                             Circle()
                                 .trim(from: 0, to: progress)
                                 .stroke(
                                     .primaryBlue,
-                                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                                    style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round)
                                 )
                                 .rotationEffect(Angle(degrees: -90))
                                 .animation(.easeInOut(duration: 0.1), value: progress)
                         }
                         .padding(18)
                         
-                        // MARK: - Step 3
+                        // MARK: - Step 3 (도전과제!)
                         Circle()
                             .foregroundStyle(.primaryBlue)
-                            .frame(width: endCircleSize, height: endCircleSize)
+                            .frame(width: endCircleDiameter, height: endCircleDiameter)
                             .offset(x: xOffset, y: yOffset)
                             .animation(.easeInOut, value: progress)
                     }
@@ -107,6 +119,9 @@ struct PrettyTimer: View {
                     resetTimer()
                 }
             }
+        }
+        .onDisappear {
+            timer?.cancel()
         }
     }
 }

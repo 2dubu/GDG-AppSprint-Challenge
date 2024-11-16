@@ -17,6 +17,7 @@
 		C6516E872CE85A9700FCFAF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6516E7B2CE85A9700FCFAF2 /* Assets.xcassets */; };
 		C6516E8B2CE85AD600FCFAF2 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6516E8A2CE85AD100FCFAF2 /* Font+Extension.swift */; };
 		C6516E8D2CE85BAC00FCFAF2 /* CapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6516E8C2CE85BA600FCFAF2 /* CapsuleView.swift */; };
+		C6516E912CE862D200FCFAF2 /* SimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6516E902CE862C500FCFAF2 /* SimpleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		C6516E7E2CE85A9700FCFAF2 /* PrettyTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrettyTimer.swift; sourceTree = "<group>"; };
 		C6516E8A2CE85AD100FCFAF2 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		C6516E8C2CE85BA600FCFAF2 /* CapsuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleView.swift; sourceTree = "<group>"; };
+		C6516E902CE862C500FCFAF2 /* SimpleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				C6516E7A2CE85A9700FCFAF2 /* Util */,
 				C6516E7C2CE85A9700FCFAF2 /* GDG_AppSprint_ChallengeApp.swift */,
 				C6516E7E2CE85A9700FCFAF2 /* PrettyTimer.swift */,
+				C6516E902CE862C500FCFAF2 /* SimpleButton.swift */,
 				C6516E8C2CE85BA600FCFAF2 /* CapsuleView.swift */,
 				C6516E892CE85AAF00FCFAF2 /* Resource */,
 				C6516E792CE85A9700FCFAF2 /* Preview Content */,
@@ -192,6 +195,7 @@
 				C6516E802CE85A9700FCFAF2 /* GDG_AppSprint_ChallengeApp.swift in Sources */,
 				C6516E812CE85A9700FCFAF2 /* PrettyTimer.swift in Sources */,
 				C6516E8B2CE85AD600FCFAF2 /* Font+Extension.swift in Sources */,
+				C6516E912CE862D200FCFAF2 /* SimpleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
